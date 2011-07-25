@@ -59,7 +59,7 @@ I bet you want to have a look at the source code. [Here it is](https://github.co
 
 I'd recommend keeping the source around in a tab while reading the following sections. The program is subdivided in eight parts, and the corresponding sections pull the noteworthy chunky bits out of the source code cookie. The explanations don't contain any particular spoilers, but the source code itself does.
 
-## [Predeclarations](https://github.com/masak/crypt/blob/e0c02750325b40cf493e1a7e03ebe6f8de5cea67/crypt.pl#L1)
+## Predeclarations
 
 Perl 6 programs are read through *once* by the compiler, from top to bottom. If you refer to a class or role before it's been defined, the compiler becomes confused and gives you an error. (In the future, Rakudo will give a compile-time error. Unfortunately, as of this writing it still gives a run-time error, which is worse.)
 
@@ -69,7 +69,7 @@ In order to avoid references to types that haven't been declared yet, we *could*
 
 In a way, the predeclarations form a "table of contents" of classes and roles. You'll note that they also are grouped suggestively: first comes a list of various roles that give objects various capabilities; then come the things themselves, then a few rooms/locations. As it happens, this is the order that these types are later introduced in the program.
 
-## [Global variables](https://github.com/masak/crypt/blob/e0c02750325b40cf493e1a7e03ebe6f8de5cea67/crypt.pl#L44)
+## Global variables
 
 It is generally agreed-upon that global variables are Bad with a capital "B". Especially in a program that otherwise strives to be object-oriented, each global variable is like a defeat, a strike against all that we love and hold dear. Global variables can make people see red, and make them want to rip out all the code and rewrite it.
 
@@ -79,7 +79,7 @@ If they're so bad, why are they here, in a program supposed to teach good progra
 
 Strive to do things right, and by all means keep to principles. But be practical too, and know when to deviate from common rules of thumb. (And be prepared to take the ire from people who don't.)
 
-## [Utility subroutines](https://github.com/masak/crypt/blob/e0c02750325b40cf493e1a7e03ebe6f8de5cea67/crypt.pl#L120)
+## Utility subroutines
 
 Just as classes are concrete representations of things in our program that we talk about a lot, so subroutines often "condense" out of relations or circumstances that we find ourselves mentioning in a lot of places around the program. For example, whether there is any light in the current room is central to whether we can examine things, read things, or get any location descriptions at all. So we define `there_is_light` in one place, and then we can use and re-use the concept everywhere.
 
@@ -110,7 +110,7 @@ The sub has four parts.
 
 A concept such as `there_is_light` builds on other concepts, such as `player_can_see`, which in turn build on other concepts. Unlike classes and roles, subroutines don't mind referring to each other forwards or backwards, so we don't have to think about predeclaring those. (When the Perl 6 compiler sees a name of something it hasn't seen before, it assumes that it's a subroutine call. Therefore, referring to subroutines that haven't been defined Just Works.)
 
-## [Roles for things and rooms](https://github.com/masak/crypt/blob/e0c02750325b40cf493e1a7e03ebe6f8de5cea67/crypt.pl#L187)
+## Roles for things and rooms
 
 The meat of the game; also, the most fun part to write. If something is meant to contain things, it's a `Container`. If something is meant to be picked up and carried around, it's `Takable`. All things in the game, directly or indirectly, do the general role `Thing`, which provides them with a name and a description, and an `.examine` method.
 
@@ -118,7 +118,7 @@ A couple of insights surprised me along the way. Starting out, I didn't suspect 
 
 The roles sometimes interact in fanciful ways. A thing can be `Openable` but not a `Container` (like a `Door`), or a `Container` but not `Openable` (like the `Inventory`). But if it *is* both `Openable` and a `Container`, the `.open` method in `Openable` makes sure to call `self.?on_open`, a method that &mdash; voilà &mdash; `Container` just happens to have. (This method shows the contents of the just-opened container, if any.)
 
-## [Things](https://github.com/masak/crypt/blob/e0c02750325b40cf493e1a7e03ebe6f8de5cea67/crypt.pl#L369)
+## Things
 
 Most of the work is done and represented in the roles above, which means that in this section when we construct classes for the things in the game, they can be as simple as `class Sign does Readable {}`. Empty class &mdash; all we needed to say was that the `Sign` is `Readable`.
 
@@ -126,19 +126,19 @@ Sometimes, though, we add attributes and methods "at the last minute"; notable a
 
 At other times, a class will override a method from a role. The class `Walls` would've got a `.read` method from `Thing`, but instead it provides its own, which allows random quips to be read from the walls in the various rooms.
 
-## [Directions](https://github.com/masak/crypt/blob/e0c02750325b40cf493e1a7e03ebe6f8de5cea67/crypt.pl#L531)
+## Directions
 
 This is a pleasant case of several language elements cooperating. We define a couple of global variables for the various "standard directions" and their abbreviations; then we define a subtype `Direction` that restricts `Str` to only the standard directions. Finally we draw up a subroutine that knows how to get the reverse `Direction` from a given `Direction`.
 
 Observe the trick in that subroutine: we only specify one half of the mappings of opposites, and then we "mirror" the hash with `%opposites.invert`, automatically creating the other half.
 
-## [Rooms](https://github.com/masak/crypt/blob/e0c02750325b40cf493e1a7e03ebe6f8de5cea67/crypt.pl#L574)
+## Rooms
 
 A `Room` is a `Container` with a few extra methods to handle connecting rooms together, examining the room, and entering the room. A few rooms have a few event methods to trigger various events.
 
 The biggest class in the game is the `Hall`, a room with its own little subgame. The room redefines how it presents its contents, and encourages the player to move disks between rods. This goes to show that even when we've built a set of roles for our classes to compose, there's still plenty of wiggle-room outside of that framework. At any point, we can let a class bloom out into something quite different. The roles are just there for the standard behaviors.
 
-## [The game itself](https://github.com/masak/crypt/blob/e0c02750325b40cf493e1a7e03ebe6f8de5cea67/crypt.pl#L826)
+## The game itself
 
 The rest of the game consists almost entirely of the command loop with `when` statements to direct the player's commands to the right method on the right object.
 

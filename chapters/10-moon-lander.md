@@ -1,4 +1,4 @@
-# a moon lander
+# A moon lander
 
 The good news: you've made it all the way to the moon. Congratulations!
 

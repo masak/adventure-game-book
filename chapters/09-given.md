@@ -1,4 +1,4 @@
-# given
+# `given`
 
 `if` statements are great, but after a while they start looking like this:
 
