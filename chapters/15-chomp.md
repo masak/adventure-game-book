@@ -6,68 +6,7 @@ The bad news: the upper left corner of the chocolate bar is poisoned! Oh noes!
 
 So now you're both in a really odd game were you're taking turns biting lower-right chunks off the chocolate bar, each of you plotting your way to not being the one with the poisoned corner. Oh man, how did it end up this way? No-one knows.
 
-    say "Chomp -- don't eat the poisoned corner!";
-    say "";
-    
-    my $WIDTH  = 15;
-    my $HEIGHT = 10;
-    
-    my @bar;
-    push @bar, "#" ~ "." x ($WIDTH - 1);
-    for 2 .. $HEIGHT {
-        push @bar, "." x $WIDTH;
-    }
-    
-    my $player = 1;
-
-    PLAYER:
-    loop {
-        say @bar.join("\n");
-        say "";
-    
-        my $coords;
-        my $row;
-        my $column;
-    
-        INPUT:
-        loop {
-            $coords = prompt "Player $player, move (m, n): ";
-            if $coords !~~ /^ (\d+) \s* ',' \s* (\d+) $/ {
-                say "Unrecognized move syntax. Please write it like '1, 2'";
-                redo INPUT;
-            }
-    
-            $row    = $0;
-            $column = $1;
-    
-            if $row > @bar.elems
-               || $column > @bar[$row - 1].chars {
-    
-                say "That piece was already eaten.";
-                redo INPUT;
-            }
-    
-            if $row == 1 && $column == 1 {
-                last PLAYER;
-            }
-    
-            last INPUT;
-        }
-    
-        for @bar[$row - 1 .. $HEIGHT - 1] {
-            $_ = .substr(0, $column - 1);
-        }
-    
-        if $player == 1 {
-            $player = 2;
-        }
-        else {
-            $player = 1;
-        }
-    }
-    
-    say "Augh, poison! And it doesn't taste too good, either.";
-    say "The end.";
+%%% include games/chomp
 
 A few things are worth pointing out in the above code.
 

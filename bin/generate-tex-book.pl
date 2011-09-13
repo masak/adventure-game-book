@@ -22,16 +22,20 @@ EOT
 
 close $OUTFILE;
 
+my $PERFORM_INCLUDES
+    = 'print map { "    $_\n" } split /\n/, `cat $1` '
+      . 'and $_ = "" if /^%%% include (.*)/';
 my $FIX_ENUMERATION = '$_ = $1 if /(\\\\begin{enumerate})/';
 my $SECTION_TO_CHAPTER = '$_ = "\\\\chapter{$1}" if /^\\\\section{(.*)}$/';
 my $SUBSECTION_TO_SECTION
     = '$_ = "\\\\section*{$1}" if /^\\\\subsection{(.*)}$/';
 
 for my $filename (<chapters/*.md>) {
-    system("pandoc -f markdown -t latex $filename "
-           . "| perl -ple '$FIX_ENUMERATION' "
-           . "| perl -ple '$SECTION_TO_CHAPTER' "
-           . "| perl -ple '$SUBSECTION_TO_SECTION' "
+    system("perl -wple '$PERFORM_INCLUDES' $filename "
+           . "| pandoc -f markdown -t latex "
+           . "| perl -wple '$FIX_ENUMERATION' "
+           . "| perl -wple '$SECTION_TO_CHAPTER' "
+           . "| perl -wple '$SUBSECTION_TO_SECTION' "
            . ">> $OUTFILE_NAME") == EXEC_OK
         or die $!;
 }

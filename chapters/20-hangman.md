@@ -4,133 +4,19 @@
 
 In the game "Hangman", one person guesses letters in a hidden word, while another person keeps track of the guessed letters, and penalizes wrong guesses with increments of a drawing of a stick figure in an unfortunate situation:
 
-     +
-     |
-     |
-     |
-     |
-     |
-     |
-    -+-
-    
-     +----+
-     |    |
-     |
-     |
-     |
-     |
-     |
-    -+-
-    
-     +----+
-     |    |
-     |    o
-     |
-     |
-     |
-     |
-    -+-
-    
-     +----+
-     |    |
-     |    o
-     |    |
-     |    |
-     |
-     |
-    -+-
-    
-     +----+
-     |    |
-     |    o
-     |   /|
-     |    |
-     |
-     |
-    -+-
-    
-     +----+
-     |    |
-     |    o
-     |   /|\
-     |    |
-     |
-     |
-    -+-
-    
-     +----+
-     |    |
-     |    o
-     |   /|\
-     |    |
-     |   /
-     |
-    -+-
-    
-     +----+
-     |    |
-     |    o
-     |   /|\
-     |    |
-     |   / \
-     |
-    -+-
+%%% include games/states
 
 Let's put all those drawings in a file and call the file `states`; they're the states that the game can be in.
 
 Then we need a list of juicy, sufficiently long words:
 
-    excessive
-    investigation
-    realisation
-    idiomatic
-    misinterpret
-    endocrinology
-    colloquial
+%%% include games/words
 
 Let's put *that* in a file and call it `words`.
 
 Finally, we have the game itself. Look how short it is! (Of course, partly because we put all the data in files...)
 
-    my @states = slurp("states").split("\n\n");
-    my $WORD = lines("words").roll;
-    my %letters_found;
-    
-    while @states {
-        loop {
-            my @guessed_word;
-            for $WORD.comb {
-                if %letters_found{$_} {
-                    push @guessed_word, $_.uc;
-                }
-                else {
-                    push @guessed_word, "_";
-                }
-            }
-    
-            say "Word: ", join " ", @guessed_word;
-    
-            if none(@guessed_word) eq "_" {
-                say "Congratulations! You guessed it right!";
-                exit;
-            }
-    
-            say "";
-            my $letter = prompt "Guess a letter: ";
-    
-            my $correct_guess = any($WORD.comb).lc eq $letter.lc;
-            if $correct_guess {
-                %letters_found{$letter} = True;
-            }
-            else {
-                say shift @states;
-                last;
-            }
-        }
-    }
-    
-    say "Aww, you ran out of guesses.";
-    say "The correct word was '$WORD'";
+%%% include games/hangman
 
 Make sure to copy the game to your own computer and run it. It's a nice little game, if I may say so myself.
 

@@ -2,27 +2,7 @@
 
 Without much ado, here's our first game:
 
-    say "I'm thinking about a number between 1 and 100.";
-    my $answer = (1 .. 100).roll;
-    
-    my $tries = 0;
-    loop {
-        my $guess = prompt "Guess the number: ";
-        $tries = $tries + 1;
-    
-        if $guess < $answer {
-            say "Your guess was too low.";
-        }
-        elsif $guess > $answer {
-            say "Your guess was too high.";
-        }
-        else {
-            last;
-        }
-    }
-    
-    say "Yay!";
-    say "You got it right in $tries tries!";
+%%% include games/guess-a-number
 
 All of what we've seen in the past few days works together in this bit of code. There's the `loop` that makes sure the program runs as many times as needed, and the `last` inside of it that makes sure we exit the loop when we hit upon the right answer. There's the `if`/`elsif`/`else` inside of the loop to make decisions about the guess that was just made. And a bunch of `say` and `prompt` and variables along the way to communicate with the user.
 

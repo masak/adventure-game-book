@@ -1,0 +1,21 @@
+say "I'm thinking about a number between 1 and 100.";
+my $answer = (1 .. 100).roll;
+
+my $tries = 0;
+loop {
+    my $guess = prompt "Guess the number: ";
+    $tries = $tries + 1;
+
+    if $guess < $answer {
+        say "Your guess was too low.";
+    }
+    elsif $guess > $answer {
+        say "Your guess was too high.";
+    }
+    else {
+        last;
+    }
+}
+
+say "Yay!";
+say "You got it right in $tries tries!";
