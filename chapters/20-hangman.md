@@ -1,7 +1,5 @@
 # Hangman
 
-*I'm a day behind. Computer trouble. Will try to catch up in the next few days.*
-
 In the game "Hangman", one person guesses letters in a hidden word, while another person keeps track of the guessed letters, and penalizes wrong guesses with increments of a drawing of a stick figure in an unfortunate situation:
 
 %%% include games/states
