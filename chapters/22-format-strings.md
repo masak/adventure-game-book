@@ -14,7 +14,7 @@ Well, look at this, for example:
 
     say sprintf "I have %05d apples", 15;   # "I have 00015 apples"
 
-That extra `05` there tells `sprintf` to print the value using three characters, and to fill with `0`s if needed. Convenient.
+That extra `05` there tells `sprintf` to print the value using five characters, and to fill with `0`s if needed. Convenient.
 
 Here's another convenient thing we can use it for:
 
